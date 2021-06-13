@@ -5,24 +5,30 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.kanyideveloper.recyclerviewitemclicksdemo.databinding.RecyclerRowBinding
 
-class RecyclerAdapter(private val onClickListener: OnClickListener) :
-    ListAdapter<Photo, RecyclerAdapter.MyViewHolder>(MyDiffUtil) {
-    companion object MyDiffUtil : DiffUtil.ItemCallback<Photo>() {
-        override fun areItemsTheSame(oldItem: Photo, newItem: Photo): Boolean {
+class MemesAdapter(private val onClickListener: OnClickListener) :
+    ListAdapter<Meme, MemesAdapter.MyViewHolder>(MyDiffUtil) {
+
+    companion object MyDiffUtil : DiffUtil.ItemCallback<Meme>() {
+        override fun areItemsTheSame(oldItem: Meme, newItem: Meme): Boolean {
             return oldItem == newItem
         }
 
-        override fun areContentsTheSame(oldItem: Photo, newItem: Photo): Boolean {
+        override fun areContentsTheSame(oldItem: Meme, newItem: Meme): Boolean {
             return oldItem.id == newItem.id
         }
     }
 
     inner class MyViewHolder(private val binding: RecyclerRowBinding) :
         RecyclerView.ViewHolder(binding.root) {
-        fun bind(item: Photo?) {
-            TODO("Not yet implemented")
+        fun bind(meme: Meme?) {
+            Glide.with(binding.imageView)
+                .load(meme?.url)
+                .into(binding.imageView)
+
+            binding.memeName.text = meme?.name
         }
     }
 
@@ -37,14 +43,14 @@ class RecyclerAdapter(private val onClickListener: OnClickListener) :
     }
 
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
-        val item = getItem(position)
+        val meme = getItem(position)
         holder.itemView.setOnClickListener {
-            onClickListener.onClick(item)
+            onClickListener.onClick(meme)
         }
-        holder.bind(item)
+        holder.bind(meme)
     }
 
-    class OnClickListener(val clickListener: (photo: Photo) -> Unit) {
-        fun onClick(photo: Photo) = clickListener(photo)
+    class OnClickListener(val clickListener: (meme: Meme) -> Unit) {
+        fun onClick(meme: Meme) = clickListener(meme)
     }
 }

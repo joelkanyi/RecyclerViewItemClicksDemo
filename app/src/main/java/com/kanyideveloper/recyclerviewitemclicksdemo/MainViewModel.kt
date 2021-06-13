@@ -1,31 +1,42 @@
 package com.kanyideveloper.recyclerviewitemclicksdemo
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
-import kotlinx.coroutines.launch
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 class MainViewModel : ViewModel() {
 
-    private val TAG = "MainViewModel"
-
-    private val _reponse = MutableLiveData<List<Photo>>()
-    val response: LiveData<List<Photo>>
+    private val _reponse = MutableLiveData<Memes>()
+    val response: LiveData<Memes>
         get() = _reponse
 
+    private val _loading = MutableLiveData<Boolean>()
+    val loading: LiveData<Boolean>
+        get() = _loading
+
+    private val _failed = MutableLiveData<String>()
+    val failed: LiveData<String>
+        get() = _failed
+
     init {
+        _loading.value = true
         getApiResponse()
     }
 
     private fun getApiResponse() {
-        viewModelScope.launch {
-            try {
-                _reponse.value = PhotoApi.apiService.getPhotos()
-            } catch (e: Exception) {
-                Log.d(TAG, "getApiResponse: ${e.localizedMessage}")
+        MemesApi.apiService.getPhotos().enqueue(object : Callback<Memes> {
+            override fun onResponse(call: Call<Memes>, response: Response<Memes>) {
+                _reponse.value = response.body()
+                _loading.value = false
             }
-        }
+
+            override fun onFailure(call: Call<Memes>, t: Throwable) {
+                _loading.value = false
+                _failed.value = t.localizedMessage
+            }
+        })
     }
 }

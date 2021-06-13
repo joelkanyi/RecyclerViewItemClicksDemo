@@ -1,23 +1,26 @@
 package com.kanyideveloper.recyclerviewitemclicksdemo
 
+import retrofit2.Call
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.GET
 
 interface ApiService {
-    @GET("")
-    fun getPhotos(): List<Photo>
+    @GET("get_memes")
+    fun getPhotos(): Call<Memes>
 }
 
-object PhotoApi {
-    private const val BASE_URL = ""
+object MemesApi {
+
+    private const val BASE_URL = "https://api.imgflip.com/"
+
     private val retrofit: Retrofit = Retrofit.Builder()
         .baseUrl(BASE_URL)
         .addConverterFactory(GsonConverterFactory.create())
         .build()
 
 
-    val apiService by lazy {
+    val apiService: ApiService by lazy {
         retrofit.create(ApiService::class.java)
     }
 }
