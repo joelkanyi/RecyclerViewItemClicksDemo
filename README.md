@@ -30,3 +30,9 @@ We finish our work in MemesAdapter by calling our `onClickListener` inside the `
  ```
 
  In the MemesAdapter instance, we'll add MemesAdapter `OnClickListener` object to the MemesAdapter Constructor which returns a passed in Meme from the Adapter. For now we can try and Toast the name of the clicked Meme. On other scenarios one may need to navigate to other activities or fragments and display details of the clicked item.
+
+### Demo
+<p float="left">
+<img src="screenshotz/Screenshot_20210615-193004.png" width=250/>
+<img src="screenshotz/Screenshot_20210615-193014.png" width=250/>
+  </p>
