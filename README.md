@@ -1,4 +1,5 @@
-### Code Explanation - MemesAdapter 
+### Code Explanation - MemesAdapter
+Replace the below paramaters with your model class
 ```kotlin
 class OnClickListener(val clickListener: (meme: Meme) -> Unit) {
     fun onClick(meme: Meme) = clickListener(meme)
